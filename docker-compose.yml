@@ -19,6 +19,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    restart: always
     environment:
       EXTERNAL_PORT: 1000
       PGUSER: jatin
