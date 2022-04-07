@@ -1,12 +1,40 @@
 version: "3.3"
 
 services:
-  nextjs:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: jatindb
+      POSTGRES_USER: jatin
+      POSTGRES_PASSWORD: Jatin@123
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata1:/var/lib/postgresql/data
+
+  node:
     ports:
       - 1000:1000
     build:
       context: ./
       dockerfile: Dockerfile
+    environment:
+      EXTERNAL_PORT: 1000
+      PGUSER: jatin
+      PGPASSWORD: Jatin@123
+      PGDATABASE: jatindb
+      PGHOST: db
+    depends_on:
+      - db
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080
+
+volumes:
+  pgdata1: {}
